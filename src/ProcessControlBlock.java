@@ -12,7 +12,7 @@ public class ProcessControlBlock {
     private static int pidTotal= 0;
     
     public ProcessControlBlock() {
-        this.state = ProcessState.READY;
+        this.state = ProcessState.NEW;
         this.startTimes = new ArrayList<Integer>();
         this.stopTimes = new ArrayList<Integer>();
         /* TODO: you need to add some code here

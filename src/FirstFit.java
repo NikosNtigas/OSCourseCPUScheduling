@@ -6,7 +6,7 @@ public class FirstFit extends MemoryAllocationAlgorithm {
         super(availableBlockSizes);
     }
 
-    public int fitProcess(Process p) {
+    public int fitProcess(Process p, ArrayList<MemorySlot> currentlyUsedMemorySlots) {
         boolean fit = false;
         int address = -1;
         /* TODO: you need to add some code here

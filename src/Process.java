@@ -16,13 +16,13 @@ public class Process {
         return this.pcb;
     }
    
-    public void run(int currentClockTime) {
+    public void run() {
         /* TODO: you need to add some code here
          * Hint: this should run every time a process starts running */
         
     }
     
-    public void wait(int currentClockTime) {
+    public void waitInBackground() {
         /* TODO: you need to add some code here
          * Hint: this should run every time a process stops running */
         
