@@ -19,13 +19,13 @@ public class Process {
     public void run() {
         /* TODO: you need to add some code here
          * Hint: this should run every time a process starts running */
-        
+        pcb.setState(ProcessState.RUNNING,CPU.clock);
     }
     
     public void waitInBackground() {
         /* TODO: you need to add some code here
          * Hint: this should run every time a process stops running */
-        
+        pcb.setState(ProcessState.READY,CPU.clock);
     }
 
     public double getWaitingTime() {
@@ -43,6 +43,6 @@ public class Process {
     public double getTurnAroundTime() {
         /* TODO: you need to add some code here
          * and change the return value */
-        return pcb.getStartTimes().get(pcb.getStartTimes().size() - 1) - arrivalTime;
+        return pcb.getStopTimes().get(pcb.getStopTimes().size() - 1) - arrivalTime;
     }
 }
