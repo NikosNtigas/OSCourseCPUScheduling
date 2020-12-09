@@ -4,6 +4,7 @@ public class Process {
     private int arrivalTime;
     private int burstTime;
     private int memoryRequirements;
+    private int runTime = 0;
     
     public Process(int arrivalTime, int burstTime, int memoryRequirements) {
         this.arrivalTime = arrivalTime;
@@ -20,6 +21,9 @@ public class Process {
         /* TODO: you need to add some code here
          * Hint: this should run every time a process starts running */
         pcb.setState(ProcessState.RUNNING,CPU.clock);
+        runTime++;
+        if (runTime == burstTime)
+            pcb.setState(ProcessState.TERMINATED,CPU.clock);
     }
     
     public void waitInBackground() {
