@@ -7,11 +7,12 @@ public class FCFS extends Scheduler {
 
     public void addProcess(Process p) {
         /* TODO: you need to add some code here */
+        super.processes.add(p);
     }
     
     public Process getNextProcess() {
         /* TODO: you need to add some code here
          * and change the return value */
-        return null;
+        return super.processes.get(0);
     }
 }
