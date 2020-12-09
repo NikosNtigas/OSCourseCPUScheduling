@@ -4,8 +4,9 @@ public class Process {
     private int arrivalTime;
     private int burstTime;
     private int memoryRequirements;
-    private int runTime = 0;
-    
+
+    private int runTime = 0; // total time the process run
+
     public Process(int arrivalTime, int burstTime, int memoryRequirements) {
         this.arrivalTime = arrivalTime;
         this.burstTime = burstTime;
@@ -20,16 +21,22 @@ public class Process {
     public void run() {
         /* TODO: you need to add some code here
          * Hint: this should run every time a process starts running */
-        pcb.setState(ProcessState.RUNNING,CPU.clock);
-        runTime++;
-        if (runTime == burstTime)
-            pcb.setState(ProcessState.TERMINATED,CPU.clock);
+        switch (pcb.getState()) {
+            case NEW:
+            case READY:
+                pcb.setState(ProcessState.RUNNING, CPU.clock);
+                return;
+            case RUNNING:
+                runTime++; // increasing by 1 every CPU.tick() & important for knowing when a process terminates!
+                if (runTime == burstTime) pcb.setState(ProcessState.TERMINATED, CPU.clock);
+            case TERMINATED:
+        }
     }
     
     public void waitInBackground() {
         /* TODO: you need to add some code here
          * Hint: this should run every time a process stops running */
-        pcb.setState(ProcessState.READY,CPU.clock);
+        pcb.setState(ProcessState.READY, CPU.clock);
     }
 
     public double getWaitingTime() {
