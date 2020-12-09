@@ -31,18 +31,18 @@ public class Process {
     public double getWaitingTime() {
         /* TODO: you need to add some code here
          * and change the return value */
-        return 0;
+        return getTurnAroundTime() - burstTime;
     }
     
     public double getResponseTime() {
         /* TODO: you need to add some code here
          * and change the return value */
-        return pcb.getStartTimes().get(0);
+        return pcb.getStartTimes().get(0) - arrivalTime;
     }
     
     public double getTurnAroundTime() {
         /* TODO: you need to add some code here
          * and change the return value */
-        return 0;
+        return pcb.getStartTimes().get(pcb.getStartTimes().size() - 1) - arrivalTime;
     }
 }

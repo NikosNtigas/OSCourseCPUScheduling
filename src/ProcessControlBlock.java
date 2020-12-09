@@ -38,7 +38,6 @@ public class ProcessControlBlock {
             stopTimes.add(CPU.clock);
         else if (state == ProcessState.RUNNING)
             startTimes.add(CPU.clock);
-        
     }
     
     public int getPid() { 
