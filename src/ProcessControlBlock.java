@@ -29,6 +29,10 @@ public class ProcessControlBlock {
         /* TODO: you need to add some code here
          * Hint: update this.state, but also include currentClockTime
          * in startTimes/stopTimes */
+        if(this.state == ProcessState.NEW){
+            this.state = state;
+            return;
+        }
         this.state = state;
         if (state == ProcessState.READY || state == ProcessState.TERMINATED)
             stopTimes.add(CPU.clock);

@@ -37,7 +37,7 @@ public class Process {
     public double getResponseTime() {
         /* TODO: you need to add some code here
          * and change the return value */
-        return 0;
+        return pcb.getStartTimes().get(0);
     }
     
     public double getTurnAroundTime() {
