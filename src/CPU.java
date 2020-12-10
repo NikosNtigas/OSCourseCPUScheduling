@@ -19,16 +19,21 @@ public class CPU {
     public void run() {
         /* TODO: you need to add some code here
          * Hint: you need to run tick() in a loop, until there is nothing else to do... */
-        for (Process p : processes) {
-            scheduler.addProcess(p);
-        }
-        for (Process p = scheduler.getNextProcess(); p != null; p = scheduler.getNextProcess()) {
-            p.run();
-            if (p.getPCB().getState() == ProcessState.TERMINATED) {
-                scheduler.removeProcess(p);
-                System.out.println(CPU.clock); // debugging
-                continue;   // simultaneously terminates the process and runs the next one,
-            }               // therefore in this specific time the clock does not tick
+
+        int arrivals = 0;
+        while (arrivals < processes.length || scheduler.getNextProcess() != null) {
+            while (arrivals < processes.length && processes[arrivals].getArrivalTime() == clock) {
+                scheduler.addProcess(processes[arrivals++]);    //adding each process to the scheduler based on their arrival time
+            }
+            Process p = scheduler.getNextProcess();
+            if (p != null) {
+                p.run();
+                if (p.getPCB().getState() == ProcessState.TERMINATED) {
+                    scheduler.removeProcess(p);
+                    System.out.println(CPU.clock); // debugging
+                    continue;  // simultaneously end and start the next process
+                }
+            }
             tick();
         }
     }

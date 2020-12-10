@@ -56,4 +56,8 @@ public class Process {
          * and change the return value */
         return pcb.getStopTimes().get(pcb.getStopTimes().size() - 1) - arrivalTime;
     }
+
+    public int getArrivalTime() {
+        return arrivalTime;
+    }
 }
