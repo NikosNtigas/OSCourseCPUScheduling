@@ -1,4 +1,3 @@
-import javax.swing.plaf.IconUIResource;
 import java.util.ArrayList;
 
 public class CPU {
@@ -19,6 +18,15 @@ public class CPU {
     public void run() {
         /* TODO: you need to add some code here
          * Hint: you need to run tick() in a loop, until there is nothing else to do... */
+        for (int i = 0; i < processes.length; i++) {
+            for (int j = 0; j < processes.length - 1; j++) {
+                if (processes[j].getArrivalTime() > processes[j + 1].getArrivalTime()) {
+                    Process temp = processes[i];
+                    processes[i] = processes[i + 1];
+                    processes[i + 1] = temp;
+                }
+            }
+        } // making sure the processes are in oder based on the arrival time
 
         int arrivals = 0;
         while (arrivals < processes.length || scheduler.getNextProcess() != null) {

@@ -13,11 +13,11 @@ public class Process {
         this.memoryRequirements = memoryRequirements;
         this.pcb = new ProcessControlBlock();
     }
-    
+
     public ProcessControlBlock getPCB() {
         return this.pcb;
     }
-   
+
     public void run() {
         /* TODO: you need to add some code here
          * Hint: this should run every time a process starts running */
@@ -32,7 +32,7 @@ public class Process {
             case TERMINATED:
         }
     }
-    
+
     public void waitInBackground() {
         /* TODO: you need to add some code here
          * Hint: this should run every time a process stops running */
@@ -44,13 +44,13 @@ public class Process {
          * and change the return value */
         return getTurnAroundTime() - burstTime;
     }
-    
+
     public double getResponseTime() {
         /* TODO: you need to add some code here
          * and change the return value */
         return pcb.getStartTimes().get(0) - arrivalTime;
     }
-    
+
     public double getTurnAroundTime() {
         /* TODO: you need to add some code here
          * and change the return value */
@@ -59,5 +59,9 @@ public class Process {
 
     public int getArrivalTime() {
         return arrivalTime;
+    }
+
+    public int getBurstTime() {
+        return burstTime;
     }
 }
