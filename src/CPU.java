@@ -28,10 +28,10 @@ public class CPU {
             }
         } // making sure the processes are in oder based on the arrival time
 
-        int arrivals = 0;
-        while (arrivals < processes.length || scheduler.getNextProcess() != null) {
-            while (arrivals < processes.length && processes[arrivals].getArrivalTime() == clock) {
-                scheduler.addProcess(processes[arrivals++]);    //adding each process to the scheduler based on their arrival time
+        currentProcess = 0;
+        while (currentProcess < processes.length || scheduler.getNextProcess() != null) {
+            while (currentProcess < processes.length && processes[currentProcess].getArrivalTime() == clock) {
+                scheduler.addProcess(processes[currentProcess++]); //adding each process to the scheduler based on their arrival time
             }
             Process p = scheduler.getNextProcess();
             if (p != null) {
@@ -39,7 +39,7 @@ public class CPU {
                 if (p.getPCB().getState() == ProcessState.TERMINATED) {
                     scheduler.removeProcess(p);
                     System.out.println(CPU.clock); // debugging
-                    continue;  // simultaneously end and start the next process
+                    continue; // simultaneously end and start the next process
                 }
             }
             tick();
