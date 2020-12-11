@@ -31,6 +31,7 @@ public class CPU {
         currentProcess = 0;
         while (currentProcess < processes.length || scheduler.getNextProcess() != null) {
             while (currentProcess < processes.length && processes[currentProcess].getArrivalTime() == clock) {
+                processes[currentProcess].getPCB().setState(ProcessState.READY,clock); // the NEW process becomes READY in the scheduler queue
                 scheduler.addProcess(processes[currentProcess++]); //adding each process to the scheduler based on their arrival time
             }
             Process p = scheduler.getNextProcess();
@@ -38,7 +39,17 @@ public class CPU {
                 p.run();
                 if (p.getPCB().getState() == ProcessState.TERMINATED) {
                     scheduler.removeProcess(p);
-                    System.out.println(CPU.clock); // debugging
+
+                    System.out.format("\u001B[37m FINISHED\u001B[36m PROCESS "+ p.getPCB().getPid() +"\u001B[32m: "); // debugging
+                    System.out.format("%2d", clock);
+                    System.out.format("\u001B[37m response: \u001B[32m");
+                    System.out.format("%5.1f", p.getResponseTime());
+                    System.out.format("\u001B[37m TAT: \u001B[32m");
+                    System.out.format("%5.1f", p.getTurnAroundTime());
+                    System.out.format("\u001B[37m waiting: \u001B[32m");
+                    System.out.format("%5.1f", p.getWaitingTime());
+                    System.out.println();
+
                     continue; // simultaneously end and start the next process
                 }
             }
