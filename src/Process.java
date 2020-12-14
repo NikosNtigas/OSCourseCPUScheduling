@@ -64,4 +64,8 @@ public class Process {
     public int getBurstTime() {
         return burstTime;
     }
+    
+    public int getRunTime() {
+    	return runTime;
+    }
 }

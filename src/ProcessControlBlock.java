@@ -18,7 +18,6 @@ public class ProcessControlBlock {
         /* TODO: you need to add some code here
          * Hint: every process should get a unique PID */
         this.pid = pidTotal++; // change this line
-
     }
 
     public ProcessState getState() {
