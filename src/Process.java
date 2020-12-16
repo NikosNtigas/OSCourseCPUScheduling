@@ -25,7 +25,6 @@ public class Process {
             case NEW:
             case READY:
                 pcb.setState(ProcessState.RUNNING, CPU.clock);
-                return;
             case RUNNING:
                 runTime++; // increasing by 1 every CPU.tick() & important for knowing when a process terminates!
                 if (runTime == burstTime) pcb.setState(ProcessState.TERMINATED, CPU.clock);
@@ -57,15 +56,11 @@ public class Process {
         return pcb.getStopTimes().get(pcb.getStopTimes().size() - 1) - arrivalTime;
     }
 
-    public int getArrivalTime() {
-        return arrivalTime;
-    }
+    public int getArrivalTime() { return arrivalTime; }
 
-    public int getBurstTime() {
-        return burstTime;
-    }
+    public int getBurstTime() { return burstTime; }
     
-    public int getRunTime() {
-    	return runTime;
-    }
+    public int getRunTime() { return runTime; }
+
+    public int getMemoryRequirements() { return memoryRequirements; }
 }

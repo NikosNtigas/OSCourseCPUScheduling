@@ -28,15 +28,13 @@ public class ProcessControlBlock {
         /* TODO: you need to add some code here
          * Hint: update this.state, but also include currentClockTime
          * in startTimes/stopTimes */
-        if (this.state == ProcessState.NEW) {
-            this.state = state;
-            return;
+        if (this.state == ProcessState.NEW) this.state = state;
+        else {
+            switch (this.state = state) {
+                case READY, TERMINATED -> stopTimes.add(CPU.clock);
+                case RUNNING -> startTimes.add(CPU.clock);
+            }
         }
-        this.state = state;
-        if (state == ProcessState.READY || state == ProcessState.TERMINATED)
-            stopTimes.add(CPU.clock);
-        else if (state == ProcessState.RUNNING)
-            startTimes.add(CPU.clock);
     }
 
     public int getPid() {
