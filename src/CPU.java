@@ -31,9 +31,13 @@ public class CPU {
         currentProcess = 0;
 
         while (currentProcess < processes.length || !scheduler.processes.isEmpty()) {
-            while (currentProcess < processes.length && processes[currentProcess].getArrivalTime() == clock) {
-                processes[currentProcess].getPCB().setState(ProcessState.READY,clock); // the NEW process becomes READY in the scheduler queue
-                scheduler.addProcess(processes[currentProcess++]); //adding each process to the scheduler based on their arrival time
+            while (currentProcess < processes.length && processes[currentProcess].getArrivalTime() <= clock) {
+                if (mmu.loadProcessIntoRAM(processes[currentProcess])) {
+                    processes[currentProcess].getPCB().setState(ProcessState.READY, clock); // the NEW process becomes READY in the scheduler queue
+                    scheduler.addProcess(processes[currentProcess++]); //adding each process to the scheduler based on their arrival time
+                }else{
+                    break;
+                }
             }
             tick();
             Process p = scheduler.getNextProcess();
@@ -42,6 +46,13 @@ public class CPU {
                 System.out.println(p.getPCB().getPid() + " " + CPU.clock + " " + p.getRunTime());
                 if (p.getPCB().getState() == ProcessState.TERMINATED) {
                     scheduler.removeProcess(p);
+                    for (int i = 0; i < mmu.getBlockHasProcess().length; i++) {
+                        if (mmu.getBlockHasProcess()[i] == p.getPCB().getPid()){
+                            mmu.getCurrentlyUsedMemorySlots().get(i).setEnd(mmu.getCurrentlyUsedMemorySlots().get(i).getStart());
+                            System.out.println("SSSSS:" + i);
+                            break;
+                        }
+                    }
 
                     System.out.format("\u001B[37m FINISHED\u001B[36m PROCESS " + p.getPCB().getPid() + "\u001B[32m: "); // debugging
                     System.out.format("%2d", clock);
