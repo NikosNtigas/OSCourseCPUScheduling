@@ -31,14 +31,14 @@ public class CPU {
         currentProcess = 0;
 
         while (currentProcess < processes.length || !scheduler.processes.isEmpty()) {
-            while (currentProcess < processes.length && processes[currentProcess].getArrivalTime() <= clock) {
-                if (mmu.loadProcessIntoRAM(processes[currentProcess])) {
-                    processes[currentProcess].getPCB().setState(ProcessState.READY, clock); // the NEW process becomes READY in the scheduler queue
-                    scheduler.addProcess(processes[currentProcess++]); //adding each process to the scheduler based on their arrival time
-                }else{
-                    break;
+            for (Process p : processes) {
+                if(p.getPCB().getState() == ProcessState.NEW && p.getArrivalTime() <= clock && mmu.loadProcessIntoRAM(p)){
+                    p.getPCB().setState(ProcessState.READY, clock);     // the NEW process becomes READY in the scheduler queue
+                    scheduler.addProcess(p);    //adding each process to the scheduler based on their arrival time
+                    currentProcess++;
                 }
             }
+
             tick();
             Process p = scheduler.getNextProcess();
             if (p != null) {
@@ -49,7 +49,7 @@ public class CPU {
                     for (int i = 0; i < mmu.getBlockHasProcess().length; i++) {
                         if (mmu.getBlockHasProcess()[i] == p.getPCB().getPid()){
                             mmu.getCurrentlyUsedMemorySlots().get(i).setEnd(mmu.getCurrentlyUsedMemorySlots().get(i).getStart());
-                            System.out.println("SSSSS:" + i);
+                            System.out.println("Memory Block:" + i);
                             break;
                         }
                     }
@@ -62,7 +62,7 @@ public class CPU {
                     System.out.format("%5.1f", p.getTurnAroundTime());
                     System.out.format("\u001B[37m waiting: \u001B[32m");
                     System.out.format("%5.1f", p.getWaitingTime());
-                    System.out.println("\u001B[97m");
+                    System.out.println("\u001B[37m");
                 }
             }
         }
