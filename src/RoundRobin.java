@@ -7,6 +7,8 @@ public class RoundRobin extends Scheduler {
     public RoundRobin() {
         this.quantum = 1; // default quantum
         /* TODO: you _may_ need to add some code here */
+        //variable for saving the time of CPU when a process has started running
+        //check_clock + CPU.clock is the time the CPU will set the process in ready state if it has not ended
         check_clock = 0;
     }
     
@@ -25,12 +27,15 @@ public class RoundRobin extends Scheduler {
          * and change the return value */
     	if(super.processes.isEmpty())
     		return null;
-    	if(processTerminated() && CPU.clock<check_clock+quantum+1) {
+    	//check if a process has ended before its assigned time slice
+    	if(processTerminated() && CPU.clock<check_clock+quantum) {
     		check_clock = CPU.clock;
     	}
-    	if(CPU.clock == check_clock+quantum+1)
+    	//switch processes when the time for each process has ended
+    	//Check if a process ended exactly in its assigned time slice
+    	if(CPU.clock == check_clock+quantum)
     		if(!processTerminated()) {
-    			//super.processes.get(0).waitInBackground();
+    			super.processes.get(0).waitInBackground();
     	   		super.processes.add(super.processes.get(0));
     	   		super.processes.remove(0);
     	   		check_clock = CPU.clock;
