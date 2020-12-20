@@ -10,8 +10,8 @@ public class Main3085 {
                 new Process(3, 1, 25),
                 new Process(4, 3, 30)
         };
-        final int[] availableBlockSizes = {100, 100, 100, 100}; // sizes in kB
-        MemoryAllocationAlgorithm algorithm = new FirstFit(availableBlockSizes);
+        final int[] availableBlockSizes = {15,40,10,20}; // sizes in kB
+        MemoryAllocationAlgorithm algorithm = new BestFit(availableBlockSizes);
         MMU mmu = new MMU(availableBlockSizes, algorithm);
         Scheduler scheduler = new SJF();
         CPU cpu = new CPU(scheduler, mmu, processes);

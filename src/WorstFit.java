@@ -7,14 +7,17 @@ public class WorstFit extends MemoryAllocationAlgorithm {
     }
 
     public int fitProcess(Process p, ArrayList<MemorySlot> currentlyUsedMemorySlots) {
-        boolean fit = false;
+      // boolean fit = false;
+        int max=Integer.MIN_VALUE;
         int address = -1;
-        /* TODO: you need to add some code here
-         * Hint: this should return the memory address where the process was
-         * loaded into if the process fits. In case the process doesn't fit, it
-         * should return -1. */
-
+        for (int i = 0; i < availableBlockSizes.length; i++) {
+            if (max < availableBlockSizes[i] && p.getMemoryRequirements() <= availableBlockSizes[i] && currentlyUsedMemorySlots.get(i).getStart() == currentlyUsedMemorySlots.get(i).getEnd()) {
+                max = availableBlockSizes[i];
+                address=i;
+            }
+        }
         return address;
+
     }
 
 }
