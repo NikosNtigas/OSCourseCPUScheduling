@@ -31,8 +31,11 @@ public class ProcessControlBlock {
         if (this.state == ProcessState.NEW) this.state = state;
         else {
             switch (this.state = state) {
-                case READY, TERMINATED -> stopTimes.add(CPU.clock);
-                case RUNNING -> startTimes.add(CPU.clock);
+                case READY:
+                case TERMINATED:
+                    stopTimes.add(CPU.clock);
+                case RUNNING :
+                    startTimes.add(CPU.clock);
             }
         }
     }

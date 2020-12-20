@@ -9,7 +9,7 @@ public class Main3317 {
                 new Process(0, 5, 10),
                 new Process(2, 2, 40),
                 new Process(3, 1, 25),
-                new Process(4, 3, 30)
+                new Process(4, 3, 30),
         };
         final int[] availableBlockSizes = {15, 40, 10, 20}; // sizes in kB
         MemoryAllocationAlgorithm algorithm = new BestFit(availableBlockSizes);
