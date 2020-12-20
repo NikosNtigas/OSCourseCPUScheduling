@@ -14,29 +14,24 @@ public class SJF extends Scheduler {
     public Process getNextProcess() {
         int min_burst_time = Integer.MAX_VALUE;
         int position = 0;
-        // boolean flag=false;
         if (processes.isEmpty())
             return null;
 
         /* TODO: you need to add some code here
          *and change the return value */
-        //super.processes.sort(Comparator.comparing(Process::getBurstTime));
-        //return processes.get(0);
-   for (int i = 0; i < processes.size(); i++) {
-        if(CPU.clock>=processes.get(i).getArrivalTime()) {
-            if (processes.get(i).getBurstTime() < min_burst_time) {
-                min_burst_time = processes.get(i).getBurstTime();
-                position = i;
-            }
+
+        for (Process p:processes) {
+            if (p.getPCB().getState() == ProcessState.RUNNING)
+                return p;
         }
 
-    }
         for (int i = 0; i < processes.size(); i++) {
-            if (processes.get(i).getPCB().getState() == ProcessState.RUNNING)
-                return processes.get(i);
+                if (processes.get(i).getBurstTime() < min_burst_time) {
+                    min_burst_time = processes.get(i).getBurstTime();
+                    position = i;
+                }
         }
         return processes.get(position);
-
-
     }
+
 }
