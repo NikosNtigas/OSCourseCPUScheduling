@@ -23,9 +23,7 @@ public class MemorySlot {
         return blockStart;
     }
 
-    public int getBlockEnd() {
-        return blockEnd;
-    }
+    public int getBlockEnd() { return blockEnd; }
 
     public int getStart() {
         return start;
