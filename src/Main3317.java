@@ -17,6 +17,7 @@ public class Main3317 {
         Scheduler scheduler = new FCFS();
         CPU cpu = new CPU(scheduler, mmu, processes);
         cpu.run();
+
     }
 
 }
