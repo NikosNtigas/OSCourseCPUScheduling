@@ -6,6 +6,7 @@ public class Process {
     private int memoryRequirements;
 
     private int runTime = 0; // total time the process run
+    private int completionTime = 0;
 
     public Process(int arrivalTime, int burstTime, int memoryRequirements) {
         this.arrivalTime = arrivalTime;
@@ -27,7 +28,10 @@ public class Process {
                 pcb.setState(ProcessState.RUNNING, CPU.clock);
             case RUNNING:
                 runTime++; // increasing by 1 every CPU.tick() & important for knowing when a process terminates!
-                if (runTime == burstTime) pcb.setState(ProcessState.TERMINATED, CPU.clock);
+                if (runTime == burstTime) {
+                    pcb.setState(ProcessState.TERMINATED, CPU.clock);
+                    completionTime = CPU.clock;
+                }
             case TERMINATED:
         }
     }
@@ -59,8 +63,10 @@ public class Process {
     public int getArrivalTime() { return arrivalTime; }
 
     public int getBurstTime() { return burstTime; }
-    
-    public int getRunTime() { return runTime; }
 
     public int getMemoryRequirements() { return memoryRequirements; }
+
+    public int getRunTime() { return runTime; }
+
+    public int getCompletionTime() { return completionTime; }
 }
