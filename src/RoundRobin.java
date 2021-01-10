@@ -1,3 +1,4 @@
+
 public class RoundRobin extends Scheduler {
 
     private int quantum;
@@ -46,7 +47,7 @@ public class RoundRobin extends Scheduler {
     private boolean processTerminated() {
     	if(super.processes.isEmpty())
     		return false;
-    	return super.processes.get(0).getRunTime()+1 == super.processes.get(0).getBurstTime() ? true : false;
+    	return super.processes.get(0).getRunTime() + 1 == super.processes.get(0).getBurstTime();
     }
     
     private void showDebug() {

@@ -20,11 +20,11 @@ public class Process {
     }
 
     public void run() {
-        /* TODO: you need to add some code here
-         * Hint: this should run every time a process starts running */
+        // this method runs every time the cpu runs the loaded process
         switch (pcb.getState()) {
             case NEW:
             case READY:
+                // on the first run set the state RUNNING
                 pcb.setState(ProcessState.RUNNING, CPU.clock);
             case RUNNING:
                 runTime++; // increasing by 1 every CPU.tick() & important for knowing when a process terminates!
@@ -37,26 +37,18 @@ public class Process {
     }
 
     public void waitInBackground() {
-        /* TODO: you need to add some code here
-         * Hint: this should run every time a process stops running */
         pcb.setState(ProcessState.READY, CPU.clock);
     }
 
     public double getWaitingTime() {
-        /* TODO: you need to add some code here
-         * and change the return value */
         return getTurnAroundTime() - burstTime;
     }
 
     public double getResponseTime() {
-        /* TODO: you need to add some code here
-         * and change the return value */
         return pcb.getStartTimes().get(0) - arrivalTime;
     }
 
     public double getTurnAroundTime() {
-        /* TODO: you need to add some code here
-         * and change the return value */
         return pcb.getStopTimes().get(pcb.getStopTimes().size() - 1) - arrivalTime;
     }
 
