@@ -1,18 +1,13 @@
 
 public class FCFS extends Scheduler {
 
-    public FCFS() {
-        /* TODO: you _may_ need to add some code here */
-    }
+    public FCFS() {}
 
     public void addProcess(Process p) {
-        /* TODO: you need to add some code here */
         processes.add(p);
-    }
-    
+    } // just add the new process to the end of the array
+
     public Process getNextProcess() {
-        /* TODO: you need to add some code here
-         * and change the return value */
-        return processes.size() == 0 ? null : processes.get(0);
-    }
+        return processes.isEmpty() ? null : processes.get(0);
+    } // if empty return null else return first process
 }

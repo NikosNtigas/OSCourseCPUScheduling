@@ -11,10 +11,10 @@ public class Main3328 {
                 new Process(3, 1, 25),
                 new Process(4, 3, 30)
         };
-        final int[] availableBlockSizes = {15, 40, 10, 20}; // sizes in kB
+        final int[] availableBlockSizes = {40, 40, 40, 40}; // sizes in kB
         MemoryAllocationAlgorithm algorithm = new FirstFit(availableBlockSizes);
         MMU mmu = new MMU(availableBlockSizes, algorithm);
-        Scheduler scheduler = new FCFS();
+        Scheduler scheduler = new RoundRobin(2);
         CPU cpu = new CPU(scheduler, mmu, processes);
         cpu.run();
     }

@@ -3,6 +3,10 @@ import org.junit.jupiter.api.*;
 import java.util.Arrays;
 import java.util.Comparator;
 
+/**
+ * The class SchedulerTest it is testing only the scheduler algorithms,
+ * in order to do that it make sure that all the processes can fit into the memory
+ */
 class SchedulerTest {
     CPU cpu;
 
@@ -10,6 +14,7 @@ class SchedulerTest {
     @TestInstance(TestInstance.Lifecycle.PER_CLASS)
     class FCFSTests {
         void init(Process[] processes) {
+            // get the maximum memory block
             int max = Arrays.stream(processes).max(Comparator.comparingInt(Process::getMemoryRequirements)).get().getMemoryRequirements();
             int[] blockSizes = new int[processes.length];
             Arrays.fill(blockSizes, max);
