@@ -196,10 +196,10 @@ class SchedulerTest {
             @Order(0)
             DynamicTest[] Process_1() {
                 return new DynamicTest[]{
-                        DynamicTest.dynamicTest("Completion Time", () -> Assertions.assertEquals(processes[1].getCompletionTime(), 4)),
-                        DynamicTest.dynamicTest("Response Time", () -> Assertions.assertEquals(processes[1].getResponseTime(), 1.0)),
-                        DynamicTest.dynamicTest("TAT", () -> Assertions.assertEquals(processes[1].getTurnAroundTime(), 2.0)),
-                        DynamicTest.dynamicTest("Waiting Time", () -> Assertions.assertEquals(processes[1].getWaitingTime(), 0.0)),
+                        DynamicTest.dynamicTest("Completion Time", () -> Assertions.assertEquals(4, processes[1].getCompletionTime())),
+                        DynamicTest.dynamicTest("Response Time", () -> Assertions.assertEquals(0.0, processes[1].getResponseTime())),
+                        DynamicTest.dynamicTest("TAT", () -> Assertions.assertEquals(2.0, processes[1].getTurnAroundTime())),
+                        DynamicTest.dynamicTest("Waiting Time", () -> Assertions.assertEquals(0.0, processes[1].getWaitingTime())),
                 };
             }
 
@@ -208,10 +208,10 @@ class SchedulerTest {
             @Order(1)
             DynamicTest[] Process_2() {
                 return new DynamicTest[]{
-                        DynamicTest.dynamicTest("Completion Time", () -> Assertions.assertEquals(processes[2].getCompletionTime(), 7)),
-                        DynamicTest.dynamicTest("Response Time", () -> Assertions.assertEquals(processes[2].getResponseTime(), 4.0)),
-                        DynamicTest.dynamicTest("TAT", () -> Assertions.assertEquals(processes[2].getTurnAroundTime(), 4.0)),
-                        DynamicTest.dynamicTest("Waiting Time", () -> Assertions.assertEquals(processes[2].getWaitingTime(), 3.0)),
+                        DynamicTest.dynamicTest("Completion Time", () -> Assertions.assertEquals(7, processes[2].getCompletionTime())),
+                        DynamicTest.dynamicTest("Response Time", () -> Assertions.assertEquals(3.0, processes[2].getResponseTime())),
+                        DynamicTest.dynamicTest("TAT", () -> Assertions.assertEquals(4.0, processes[2].getTurnAroundTime())),
+                        DynamicTest.dynamicTest("Waiting Time", () -> Assertions.assertEquals(3.0, processes[2].getWaitingTime())),
                 };
             }
 
@@ -220,10 +220,10 @@ class SchedulerTest {
             @Order(3)
             DynamicTest[] Process_0() {
                 return new DynamicTest[]{
-                        DynamicTest.dynamicTest("Completion Time", () -> Assertions.assertEquals(processes[0].getCompletionTime(), 10)),
-                        DynamicTest.dynamicTest("Response Time", () -> Assertions.assertEquals(processes[0].getResponseTime(), 1.0)),
-                        DynamicTest.dynamicTest("TAT", () -> Assertions.assertEquals(processes[0].getTurnAroundTime(), 10.0)),
-                        DynamicTest.dynamicTest("Waiting Time", () -> Assertions.assertEquals(processes[0].getWaitingTime(), 5.0)),
+                        DynamicTest.dynamicTest("Completion Time", () -> Assertions.assertEquals(10, processes[0].getCompletionTime())),
+                        DynamicTest.dynamicTest("Response Time", () -> Assertions.assertEquals(0.0, processes[0].getResponseTime())),
+                        DynamicTest.dynamicTest("TAT", () -> Assertions.assertEquals(10.0, processes[0].getTurnAroundTime())),
+                        DynamicTest.dynamicTest("Waiting Time", () -> Assertions.assertEquals(5.0, processes[0].getWaitingTime())),
                 };
             }
 
@@ -232,10 +232,10 @@ class SchedulerTest {
             @Order(3)
             DynamicTest[] Process_3() {
                 return new DynamicTest[]{
-                        DynamicTest.dynamicTest("Completion Time", () -> Assertions.assertEquals(processes[3].getCompletionTime(), 11)),
-                        DynamicTest.dynamicTest("Response Time", () -> Assertions.assertEquals(processes[3].getResponseTime(), 4.0)),
-                        DynamicTest.dynamicTest("TAT", () -> Assertions.assertEquals(processes[3].getTurnAroundTime(), 7.0)),
-                        DynamicTest.dynamicTest("Waiting Time", () -> Assertions.assertEquals(processes[3].getWaitingTime(), 4.0)),
+                        DynamicTest.dynamicTest("Completion Time", () -> Assertions.assertEquals(11, processes[3].getCompletionTime())),
+                        DynamicTest.dynamicTest("Response Time", () -> Assertions.assertEquals(3.0, processes[3].getResponseTime())),
+                        DynamicTest.dynamicTest("TAT", () -> Assertions.assertEquals(7.0, processes[3].getTurnAroundTime())),
+                        DynamicTest.dynamicTest("Waiting Time", () -> Assertions.assertEquals(4.0, processes[3].getWaitingTime())),
                 };
             }
         }

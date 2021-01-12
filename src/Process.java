@@ -45,7 +45,7 @@ public class Process {
     }
 
     public double getResponseTime() {
-        return pcb.getStartTimes().get(0) - arrivalTime;
+        return pcb.getStartTimes().get(0) - arrivalTime - 1;
     }
 
     public double getTurnAroundTime() {
