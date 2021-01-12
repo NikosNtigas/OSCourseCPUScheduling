@@ -41,4 +41,13 @@ public class MemorySlot {
         this.end = end;
     }
 
+    @Override
+    public String toString() {
+        return "MemorySlot{" +
+                "start=" + start +
+                ", end=" + end +
+                ", blockStart=" + blockStart +
+                ", blockEnd=" + blockEnd +
+                '}';
+    }
 }

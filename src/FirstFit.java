@@ -15,12 +15,11 @@ public class FirstFit extends MemoryAllocationAlgorithm {
          * loaded into if the process fits. In case the process doesn't fit, it
          * should return -1. */
         for (int i = 0; i < availableBlockSizes.length; i++) {
-            if (p.getMemoryRequirements() <= availableBlockSizes[i] && currentlyUsedMemorySlots.get(i).getStart() == currentlyUsedMemorySlots.get(i).getEnd()) {
+            if (p.getMemoryRequirements() <= availableBlockSizes[i]) {
                 address = i;
                 break;
             }
         }
-
         return address;
     }
 
