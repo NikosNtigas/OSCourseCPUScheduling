@@ -1,8 +1,5 @@
 import org.junit.jupiter.api.*;
 
-import java.util.Arrays;
-import java.util.Comparator;
-
 /**
  * The class SchedulerTest it is testing only the scheduler algorithms,
  * in order to do that it make sure that all the processes can fit into the memory
@@ -14,10 +11,8 @@ class SchedulerTest {
     @TestInstance(TestInstance.Lifecycle.PER_CLASS)
     class FCFSTests {
         void init(Process[] processes) {
-            // get the maximum memory block
-            int max = Arrays.stream(processes).max(Comparator.comparingInt(Process::getMemoryRequirements)).get().getMemoryRequirements();
             int[] blockSizes = new int[processes.length];
-            Arrays.fill(blockSizes, max);
+            for (int i = 0; i < blockSizes.length; i++) blockSizes[i] = processes[i].getMemoryRequirements();
             Scheduler scheduler = new FCFS();
             MMU mmu = new MMU(blockSizes, new FirstFit(blockSizes));
             CPU.clock = 0;
@@ -94,9 +89,8 @@ class SchedulerTest {
     @TestInstance(TestInstance.Lifecycle.PER_CLASS)
     class SJFTests {
         void init(Process[] processes) {
-            int max = Arrays.stream(processes).max(Comparator.comparingInt(Process::getMemoryRequirements)).get().getMemoryRequirements();
             int[] blockSizes = new int[processes.length];
-            Arrays.fill(blockSizes, max);
+            for (int i = 0; i < blockSizes.length; i++) blockSizes[i] = processes[i].getMemoryRequirements();
             Scheduler scheduler = new SJF();
             MMU mmu = new MMU(blockSizes, new FirstFit(blockSizes));
             CPU.clock = 0;
@@ -173,9 +167,8 @@ class SchedulerTest {
     @TestInstance(TestInstance.Lifecycle.PER_CLASS)
     class RoundRobinTests {
         void init(Process[] processes, int quantum) {
-            int max = Arrays.stream(processes).max(Comparator.comparingInt(Process::getMemoryRequirements)).get().getMemoryRequirements();
             int[] blockSizes = new int[processes.length];
-            Arrays.fill(blockSizes, max);
+            for (int i = 0; i < blockSizes.length; i++) blockSizes[i] = processes[i].getMemoryRequirements();
             Scheduler scheduler = new RoundRobin(quantum);
             MMU mmu = new MMU(blockSizes, new FirstFit(blockSizes));
             CPU.clock = 0;

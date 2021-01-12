@@ -19,15 +19,14 @@ public class CPU {
         for (int i = 0; i < processes.length; i++) {
             for (int j = 0; j < processes.length - 1; j++) {
                 if (processes[j].getArrivalTime() > processes[j + 1].getArrivalTime()) {
-                    Process temp = processes[i];
-                    processes[i] = processes[i + 1];
-                    processes[i + 1] = temp;
+                    Process temp = processes[j];
+                    processes[j] = processes[j + 1];
+                    processes[j + 1] = temp;
                 }
             }
         } // making sure the processes are in oder based on the arrival time
 
         currentProcess = 0;
-
         while (currentProcess < processes.length || !scheduler.processes.isEmpty()) {
             for (Process p : processes) {
                 if (p.getPCB().getState() == ProcessState.NEW && p.getArrivalTime() <= clock && mmu.loadProcessIntoRAM(p)) {
@@ -73,43 +72,12 @@ public class CPU {
         clock++;
     }
 
-    private void debugging(Process p) {
+    private void debugging(Process p, int slot, MemorySlot block) {
         System.out.format("\033[38:2:255:255:255mFINISHED\u001B[36m PROCESS " + p.getPCB().getPid() + "\033[0m\n");
         System.out.format("\t└── Completion: \033[38:2:153:255:102m" + clock + "\033[0m\n");
         System.out.format("\t└── Response: \033[38:2:153:255:102m\t" + p.getResponseTime() + "\033[0m\n");
         System.out.format("\t└── TAT: \033[38:2:153:255:102m\t\t" + p.getTurnAroundTime() + "\033[0m\n");
         System.out.format("\t└── Waiting: \033[38:2:153:255:102m\t" + p.getWaitingTime() + "\033[0m\n");
-//        for (int i = 0; i < mmu.getProcessInMemorySlot().size(); i++) {
-//            if (mmu.getBlockHasProcess()[i] == p.getPCB().getPid()) {
-//                mmu.getCurrentlyUsedMemorySlots().get(i).setEnd(mmu.getCurrentlyUsedMemorySlots().get(i).getStart());
-//                System.out.format("\t└── Block: \033[38:2:153:255:102m\t\t" + i + "ADDRESS: " +  + "\033[0m\n");
-//                break;
-//            }
-//        }
-        for (int[] slot : mmu.getProcessInMemorySlot()) {
-            if(p.getPCB().getPid() == slot[0]){
-                ArrayList<MemorySlot> currentMemoryBlock = mmu.getBlockMemorySlots().get(slot[1]);
-//                System.out.println(currentMemoryBlock);
-                mmu.getCurrentlyUsedMemorySlots().remove(currentMemoryBlock.get(slot[2]));
-
-                System.out.format("\t└── Block: \033[38:2:153:255:102m\t\t" + slot[1] + " SLOT: " + currentMemoryBlock.get(slot[2]) + "\033[0m\n");
-                currentMemoryBlock.remove(slot[2]);
-
-
-                for (int i = slot[2]; i <currentMemoryBlock.size(); i++) {  //Shifting the loaded processes to the start of the block in order to avoid fragmentation
-                    currentMemoryBlock.get(i).setStart(currentMemoryBlock.get(i).getStart() - p.getMemoryRequirements());
-                    currentMemoryBlock.get(i).setEnd(currentMemoryBlock.get(i).getEnd() - p.getMemoryRequirements());
-                }
-                System.out.println(currentMemoryBlock);
-                for (int[] s : mmu.getProcessInMemorySlot()) {
-                    if(s[1] == slot[1]) {
-                        s[2]--;
-                    }
-                }
-                mmu.getAvailableBlockSizes()[slot[1]] += p.getMemoryRequirements();
-                mmu.getProcessInMemorySlot().remove(slot);
-                break;
-            }
-        }
+        System.out.format("\t└── Block: \033[38:2:153:255:102m\t\t" + slot + " SLOT: " + block + "\033[0m\n");
     }
 }

@@ -7,7 +7,7 @@ public class MMU {
     private ArrayList<MemorySlot> currentlyUsedMemorySlots;
 
     private ArrayList<int[]> processInMemorySlot;
-    private int [] blockSizes;
+    private int[] blockSizes;
     private ArrayList<ArrayList<MemorySlot>> blockMemorySlots;
 
     public MMU(int[] availableBlockSizes, MemoryAllocationAlgorithm algorithm) {
@@ -42,13 +42,13 @@ public class MMU {
 
         if (fit) {
             availableBlockSizes[address] -= p.getMemoryRequirements();
-            if(blockMemorySlots.get(address).isEmpty()){
+            if (blockMemorySlots.get(address).isEmpty()) {
                 int realAddress = 0;
                 for (int i = 0; i < address; i++) {
                     realAddress += blockSizes[i];
                 }
                 blockMemorySlots.get(address).add(new MemorySlot(realAddress, realAddress + p.getMemoryRequirements() - 1, realAddress, realAddress + blockSizes[address] - 1));
-            }else {
+            } else {
                 MemorySlot ms = blockMemorySlots.get(address).get(blockMemorySlots.get(address).size() - 1);
                 blockMemorySlots.get(address).add(new MemorySlot(ms.getEnd() + 1, ms.getEnd() + p.getMemoryRequirements(), ms.getBlockStart(), ms.getBlockEnd()));
             }
@@ -63,7 +63,7 @@ public class MMU {
         return processInMemorySlot;
     }
 
-    public ArrayList<ArrayList<MemorySlot>> getBlockMemorySlots(){
+    public ArrayList<ArrayList<MemorySlot>> getBlockMemorySlots() {
         return blockMemorySlots;
     }
 
@@ -71,7 +71,7 @@ public class MMU {
         return currentlyUsedMemorySlots;
     }
 
-    public int[] getAvailableBlockSizes(){
+    public int[] getAvailableBlockSizes() {
         return availableBlockSizes;
     }
 }
