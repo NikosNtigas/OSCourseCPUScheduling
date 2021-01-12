@@ -44,7 +44,26 @@ public class CPU {
                 System.out.println(p.getPCB().getPid() + " " + CPU.clock + " " + p.getRunTime());
                 if (p.getPCB().getState() == ProcessState.TERMINATED) {
                     scheduler.removeProcess(p);
-                    debugging(p); // sout info of a process
+                    for (int[] slot : mmu.getProcessInMemorySlot()) {
+                        if(p.getPCB().getPid() == slot[0]){
+                            ArrayList<MemorySlot> currentMemoryBlock = mmu.getBlockMemorySlots().get(slot[1]);
+                            mmu.getCurrentlyUsedMemorySlots().remove(currentMemoryBlock.get(slot[2]));
+
+                            debugging(p, slot[1], currentMemoryBlock.get(slot[2])); // sout info of a process
+                            currentMemoryBlock.remove(slot[2]);
+
+
+                            for (int i = slot[2]; i <currentMemoryBlock.size(); i++) {  //Shifting the loaded processes to the start of the block in order to avoid fragmentation
+                                currentMemoryBlock.get(i).setStart(currentMemoryBlock.get(i).getStart() - p.getMemoryRequirements());
+                                currentMemoryBlock.get(i).setEnd(currentMemoryBlock.get(i).getEnd() - p.getMemoryRequirements());
+                            }
+                            mmu.getAvailableBlockSizes()[slot[1]] += p.getMemoryRequirements();
+                            mmu.getProcessInMemorySlot().remove(slot);
+                            int index = 0;
+                            for (int[] s : mmu.getProcessInMemorySlot()) if(s[1] == slot[1]) s[2] = index++;
+                            break;
+                        }
+                    }
                 }
             }
         }
