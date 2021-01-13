@@ -5,28 +5,22 @@ public class RoundRobin extends Scheduler {
 
     public RoundRobin() {
         this.quantum = 1; // default quantum
-        /* TODO: you _may_ need to add some code here */
     }
 
     public RoundRobin(int quantum){
         this.quantum = quantum;
     }
 
-    public void addProcess(Process p) {
-        /* TODO: you need to add some code here */
-        super.processes.add(p);
-    }
+    public void addProcess(Process p) { super.processes.add(p); } // just add the new process int the array
 
     public Process getNextProcess() {
-        /* TODO: you need to add some code here
-         * and change the return value */
-        if (super.processes.isEmpty())
-            return null;
+        if (super.processes.isEmpty()) return null;
+        // if processes is Running and has complete the quantum running time, mark it as Ready and push it to the end of the array.
         if (super.processes.get(0).getPCB().getState() == ProcessState.RUNNING && super.processes.get(0).getRunTime() % quantum == 0) {
             super.processes.get(0).waitInBackground();
             super.processes.add(super.processes.get(0));
             super.processes.remove(0);
         }
-        return super.processes.get(0);
+        return super.processes.get(0); // always return the first Process in the array
     }
 }

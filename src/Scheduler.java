@@ -17,8 +17,7 @@ public abstract class Scheduler {
      * of processes that are candidates for execution. Common for all
      * schedulers. */
     public void removeProcess(Process p) {
-        /* TODO: you need to add some code here */
-        processes.remove(p);
+        processes.remove(p); // just remove the given Process from the array
     }
     
     /* the getNextProcess() method should return the process that should

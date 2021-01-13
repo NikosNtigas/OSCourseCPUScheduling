@@ -6,7 +6,7 @@ public class Process {
     private int memoryRequirements;
 
     private int runTime = 0; // total time the process run
-    private int completionTime = 0;
+    private int completionTime = 0; // the exact time a process terminates
 
     public Process(int arrivalTime, int burstTime, int memoryRequirements) {
         this.arrivalTime = arrivalTime;
@@ -24,7 +24,7 @@ public class Process {
         switch (pcb.getState()) {
             case NEW:
             case READY:
-                // on the first run set the state RUNNING
+                // on the first run set the state RUNNING and increase the run time
                 pcb.setState(ProcessState.RUNNING, CPU.clock);
             case RUNNING:
                 runTime++; // increasing by 1 every CPU.tick() & important for knowing when a process terminates!
@@ -32,7 +32,10 @@ public class Process {
                     pcb.setState(ProcessState.TERMINATED, CPU.clock);
                     completionTime = CPU.clock;
                 }
+                break;
             case TERMINATED:
+                // A terminated process must be removed from the scheduler, so if a terminated process try to run throw an unexpected exception.
+                throw new java.lang.RuntimeException("Unexpected exception. Process try to run but the Process was already terminated.");
         }
     }
 

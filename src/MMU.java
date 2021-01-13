@@ -22,9 +22,6 @@ public class MMU {
 
     public boolean loadProcessIntoRAM(Process p) {
         boolean fit = false;
-        /* TODO: you need to add some code here
-         * Hint: this should return true if the process was able to fit into memory
-         * and false if not */
 
         if (currentlyUsedMemorySlots.isEmpty()) {   //Initializing the added arrays
             blockMemorySlots = new ArrayList<>();

@@ -15,27 +15,24 @@ public class ProcessControlBlock {
         this.state = ProcessState.NEW;
         this.startTimes = new ArrayList<Integer>();
         this.stopTimes = new ArrayList<Integer>();
-        /* TODO: you need to add some code here
-         * Hint: every process should get a unique PID */
-        this.pid = pidTotal++; // change this line
+        this.pid = pidTotal++; // Every time a Process create increment the pidTotal.
     }
 
-    public ProcessState getState() {
-        return this.state;
-    }
+    public ProcessState getState() { return this.state; }
 
     public void setState(ProcessState state, int currentClockTime) {
-        /* TODO: you need to add some code here
-         * Hint: update this.state, but also include currentClockTime
-         * in startTimes/stopTimes */
         if (this.state == ProcessState.NEW) this.state = state;
         else {
             switch (this.state = state) {
                 case READY:
                 case TERMINATED:
-                    stopTimes.add(CPU.clock);
-                case RUNNING :
-                    startTimes.add(CPU.clock);
+                    // Helpful to determine the turn around time.
+                    stopTimes.add(currentClockTime); // When process terminates or marked as ready (RoundRodin) add a time stamp to the stopTimes.
+                    break;
+                case RUNNING:
+                    // Helpful to determine the response time.
+                    startTimes.add(currentClockTime); // When process starts running add a time stamp the the startTimes.
+                    break;
             }
         }
     }

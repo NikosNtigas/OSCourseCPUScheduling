@@ -71,8 +71,8 @@ public class CPU {
         clock++;
     }
 
-    private void debugging(Process p, int slot, MemorySlot block) {
-        System.out.format("\033[38:2:255:255:255mFINISHED\u001B[36m PROCESS " + p.getPCB().getPid() + "\033[0m\n");
+    private void debugging(Process p, int slot, MemorySlot block) { //Printing information for the completed processes
+        System.out.format("\033[38:2:255:255:255mFINISHED\033[38:2:0:255:255m PROCESS " + p.getPCB().getPid() + "\033[0m\n");
         System.out.format("\t└── Completion: \033[38:2:153:255:102m" + clock + "\033[0m\n");
         System.out.format("\t└── Response: \033[38:2:153:255:102m\t" + p.getResponseTime() + "\033[0m\n");
         System.out.format("\t└── TAT: \033[38:2:153:255:102m\t\t" + p.getTurnAroundTime() + "\033[0m\n");
