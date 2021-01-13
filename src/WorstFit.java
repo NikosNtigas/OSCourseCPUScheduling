@@ -1,7 +1,7 @@
 import java.util.ArrayList;
 
 public class WorstFit extends MemoryAllocationAlgorithm {
-    
+
     public WorstFit(int[] availableBlockSizes) {
         super(availableBlockSizes);
     }
@@ -13,11 +13,10 @@ public class WorstFit extends MemoryAllocationAlgorithm {
         for (int i = 0; i < availableBlockSizes.length; i++) {
             if (max < availableBlockSizes[i] && p.getMemoryRequirements() <= availableBlockSizes[i]) {
                 max = availableBlockSizes[i];
-                address=i;
+                address = i;
             }
         }
         return address;
-
     }
 
 }

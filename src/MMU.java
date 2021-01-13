@@ -6,8 +6,12 @@ public class MMU {
     private MemoryAllocationAlgorithm algorithm;
     private ArrayList<MemorySlot> currentlyUsedMemorySlots;
 
-    private ArrayList<int[]> processInMemorySlot;
-    private int[] blockSizes;
+    private ArrayList<int[]> processInMemorySlot; //This array is used for keeping references for the set of three (process ID, block ID, memory slot ID)
+    private int[] blockSizes; //This array contains the original value of the available block sizes array
+    /*
+        Each element of this array represents a memory block, each of which
+        corresponds to an array containing the memory slots of the respected block
+     */
     private ArrayList<ArrayList<MemorySlot>> blockMemorySlots;
 
     public MMU(int[] availableBlockSizes, MemoryAllocationAlgorithm algorithm) {
@@ -22,36 +26,33 @@ public class MMU {
          * Hint: this should return true if the process was able to fit into memory
          * and false if not */
 
-        if (currentlyUsedMemorySlots.isEmpty()) {
+        if (currentlyUsedMemorySlots.isEmpty()) {   //Initializing the added arrays
             blockMemorySlots = new ArrayList<>();
             for (int i = 0; i < availableBlockSizes.length; i++) {
                 blockMemorySlots.add(new ArrayList<>());
             }
             blockSizes = new int[availableBlockSizes.length];
-            System.arraycopy(availableBlockSizes, 0, blockSizes, 0, availableBlockSizes.length);
-
-//            blockMemorySlots.get(0).add(new MemorySlot(0, -1, 0, availableBlockSizes[0] - 1));
-//            for (int i = 1; i < blockMemorySlots.size(); i++) {
-//                int n = blockMemorySlots.get(i - 1).get(0).getBlockEnd() + 1;
-//                blockMemorySlots.get(i).add(new MemorySlot(n, n, n, n + availableBlockSizes[i] - 1));
-//            }
+            System.arraycopy(availableBlockSizes, 0, blockSizes, 0, availableBlockSizes.length);    //Copying the contents of the availableBlockSizes to the blockSizes array
             processInMemorySlot = new ArrayList<>();
         }
-        int address = algorithm.fitProcess(p, currentlyUsedMemorySlots);
+        int address = algorithm.fitProcess(p, currentlyUsedMemorySlots);    //Checking if a process fits in the memory
         fit = address != -1;
 
         if (fit) {
-            availableBlockSizes[address] -= p.getMemoryRequirements();
-            if (blockMemorySlots.get(address).isEmpty()) {
+            availableBlockSizes[address] -= p.getMemoryRequirements();  //Removing the allocated space from the availableBlockSizes
+            if (blockMemorySlots.get(address).isEmpty()) { //Checking if there are any memory slots in use, inside the current block
                 int realAddress = 0;
-                for (int i = 0; i < address; i++) {
+                for (int i = 0; i < address; i++) { //Calculate the real starting address of the current block
                     realAddress += blockSizes[i];
                 }
+                //add the new memory slot to the block
                 blockMemorySlots.get(address).add(new MemorySlot(realAddress, realAddress + p.getMemoryRequirements() - 1, realAddress, realAddress + blockSizes[address] - 1));
             } else {
+                //add the new memory slot at the end of the previous one
                 MemorySlot ms = blockMemorySlots.get(address).get(blockMemorySlots.get(address).size() - 1);
                 blockMemorySlots.get(address).add(new MemorySlot(ms.getEnd() + 1, ms.getEnd() + p.getMemoryRequirements(), ms.getBlockStart(), ms.getBlockEnd()));
             }
+            //Adding this new memory slot the currentlyUsedMemorySlots and the processInMemorySlot reference array
             currentlyUsedMemorySlots.add(blockMemorySlots.get(address).get(blockMemorySlots.get(address).size() - 1));
             processInMemorySlot.add(new int[]{p.getPCB().getPid(), address, blockMemorySlots.get(address).size() - 1});
         }

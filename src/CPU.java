@@ -29,7 +29,7 @@ public class CPU {
         currentProcess = 0;
         while (currentProcess < processes.length || !scheduler.processes.isEmpty()) {
             for (Process p : processes) {
-                if (p.getPCB().getState() == ProcessState.NEW && p.getArrivalTime() <= clock && mmu.loadProcessIntoRAM(p)) { 
+                if (p.getPCB().getState() == ProcessState.NEW && p.getArrivalTime() <= clock && mmu.loadProcessIntoRAM(p)) { //checking if the process has arrived and it fits in the memory
                     p.getPCB().setState(ProcessState.READY, clock); // the NEW process becomes READY in the scheduler queue
                     scheduler.addProcess(p); // adding each process to the scheduler based on their arrival time
                     currentProcess++;
@@ -40,26 +40,25 @@ public class CPU {
             Process p = scheduler.getNextProcess();
             if (p != null) {
                 p.run();
-                System.out.println(p.getPCB().getPid() + " " + CPU.clock + " " + p.getRunTime());
                 if (p.getPCB().getState() == ProcessState.TERMINATED) {
-                    scheduler.removeProcess(p);
-                    for (int[] slot : mmu.getProcessInMemorySlot()) {
+                    scheduler.removeProcess(p); //remove process from the scheduler when it's terminated
+                    for (int[] slot : mmu.getProcessInMemorySlot()) {   //Finding the memory slot and block where the current process is allocated
                         if(p.getPCB().getPid() == slot[0]){
-                            ArrayList<MemorySlot> currentMemoryBlock = mmu.getBlockMemorySlots().get(slot[1]);
-                            mmu.getCurrentlyUsedMemorySlots().remove(currentMemoryBlock.get(slot[2]));
+                            ArrayList<MemorySlot> currentMemoryBlock = mmu.getBlockMemorySlots().get(slot[1]); //This list contains all the occupied memory slot within a block
+                            mmu.getCurrentlyUsedMemorySlots().remove(currentMemoryBlock.get(slot[2]));  // Removing the memory slot from the currentlyUsedMemorySlots
 
-                            debugging(p, slot[1], currentMemoryBlock.get(slot[2])); // sout info of a process
-                            currentMemoryBlock.remove(slot[2]);
+                            debugging(p, slot[1], currentMemoryBlock.get(slot[2])); // print info of a process
+                            currentMemoryBlock.remove(slot[2]); // Removing the used memory slot from the current block
 
 
-                            for (int i = slot[2]; i <currentMemoryBlock.size(); i++) {  //Shifting the loaded processes to the start of the block in order to avoid fragmentation
+                            for (int i = slot[2]; i <currentMemoryBlock.size(); i++) {  //Shifting the loaded processes to the start of the block in order to avoid fragmentation (compaction)
                                 currentMemoryBlock.get(i).setStart(currentMemoryBlock.get(i).getStart() - p.getMemoryRequirements());
                                 currentMemoryBlock.get(i).setEnd(currentMemoryBlock.get(i).getEnd() - p.getMemoryRequirements());
                             }
-                            mmu.getAvailableBlockSizes()[slot[1]] += p.getMemoryRequirements();
+                            mmu.getAvailableBlockSizes()[slot[1]] += p.getMemoryRequirements(); //Increasing the block size by the amount of memory that was allocated to the terminated process
                             mmu.getProcessInMemorySlot().remove(slot);
                             int index = 0;
-                            for (int[] s : mmu.getProcessInMemorySlot()) if(s[1] == slot[1]) s[2] = index++;
+                            for (int[] s : mmu.getProcessInMemorySlot()) if(s[1] == slot[1]) s[2] = index++; //Re-indexing the references to the memory slots of the current block
                             break;
                         }
                     }
@@ -79,14 +78,5 @@ public class CPU {
         System.out.format("\t└── TAT: \033[38:2:153:255:102m\t\t" + p.getTurnAroundTime() + "\033[0m\n");
         System.out.format("\t└── Waiting: \033[38:2:153:255:102m\t" + p.getWaitingTime() + "\033[0m\n");
         System.out.format("\t└── Block: \033[38:2:153:255:102m\t\t" + slot + " SLOT: " + block + "\033[0m\n");
-    }
-    
-    private void debugging1(Process p, int slot, MemorySlot block) {
-    	System.out.format("FINISHED PROCESS " + p.getPCB().getPid() + "\n");
-        System.out.format("Completion: " + clock + "\n");
-        System.out.format("Response: " + p.getResponseTime() + "\n");
-        System.out.format("TAT: " + p.getTurnAroundTime() + "\n");
-        System.out.format("Waiting: " + p.getWaitingTime() + "\n");
-        System.out.format("Block: " + slot + " SLOT: " + block+"\n");
     }
 }
