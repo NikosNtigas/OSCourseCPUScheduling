@@ -11,7 +11,7 @@ public class BestFit extends MemoryAllocationAlgorithm {
         int min=Integer.MAX_VALUE;
         int address = -1;
         for (int i = 0; i < availableBlockSizes.length; i++) {
-            if (min > availableBlockSizes[i] && p.getMemoryRequirements() <= availableBlockSizes[i] && currentlyUsedMemorySlots.get(i).getStart() == currentlyUsedMemorySlots.get(i).getEnd()) {
+            if (min > availableBlockSizes[i] && p.getMemoryRequirements() <= availableBlockSizes[i]) {
                 min = availableBlockSizes[i];
                 address=i;
             }

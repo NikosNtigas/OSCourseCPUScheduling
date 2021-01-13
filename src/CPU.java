@@ -29,13 +29,13 @@ public class CPU {
         currentProcess = 0;
         while (currentProcess < processes.length || !scheduler.processes.isEmpty()) {
             for (Process p : processes) {
-                if (p.getPCB().getState() == ProcessState.NEW && p.getArrivalTime() <= clock && mmu.loadProcessIntoRAM(p)) {
+                if (p.getPCB().getState() == ProcessState.NEW && p.getArrivalTime() <= clock && mmu.loadProcessIntoRAM(p)) { 
                     p.getPCB().setState(ProcessState.READY, clock); // the NEW process becomes READY in the scheduler queue
                     scheduler.addProcess(p); // adding each process to the scheduler based on their arrival time
                     currentProcess++;
                 }
             }
-
+            
             tick();
             Process p = scheduler.getNextProcess();
             if (p != null) {
@@ -79,5 +79,14 @@ public class CPU {
         System.out.format("\t└── TAT: \033[38:2:153:255:102m\t\t" + p.getTurnAroundTime() + "\033[0m\n");
         System.out.format("\t└── Waiting: \033[38:2:153:255:102m\t" + p.getWaitingTime() + "\033[0m\n");
         System.out.format("\t└── Block: \033[38:2:153:255:102m\t\t" + slot + " SLOT: " + block + "\033[0m\n");
+    }
+    
+    private void debugging1(Process p, int slot, MemorySlot block) {
+    	System.out.format("FINISHED PROCESS " + p.getPCB().getPid() + "\n");
+        System.out.format("Completion: " + clock + "\n");
+        System.out.format("Response: " + p.getResponseTime() + "\n");
+        System.out.format("TAT: " + p.getTurnAroundTime() + "\n");
+        System.out.format("Waiting: " + p.getWaitingTime() + "\n");
+        System.out.format("Block: " + slot + " SLOT: " + block+"\n");
     }
 }

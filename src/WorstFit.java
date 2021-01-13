@@ -11,7 +11,7 @@ public class WorstFit extends MemoryAllocationAlgorithm {
         int max=Integer.MIN_VALUE;
         int address = -1;
         for (int i = 0; i < availableBlockSizes.length; i++) {
-            if (max < availableBlockSizes[i] && p.getMemoryRequirements() <= availableBlockSizes[i] && currentlyUsedMemorySlots.get(i).getStart() == currentlyUsedMemorySlots.get(i).getEnd()) {
+            if (max < availableBlockSizes[i] && p.getMemoryRequirements() <= availableBlockSizes[i]) {
                 max = availableBlockSizes[i];
                 address=i;
             }

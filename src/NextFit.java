@@ -18,17 +18,17 @@ public class NextFit extends MemoryAllocationAlgorithm {
          * should return -1. */
         
         //Search from currentPosition until end of Block
-        for( int i = currentAddress ; i<availableBlockSizes.length ; i++)
-        	if (p.getMemoryRequirements() <= availableBlockSizes[i] && currentlyUsedMemorySlots.get(i).getStart() == currentlyUsedMemorySlots.get(i).getEnd()) {
+        for( int i = currentAddress ; i<availableBlockSizes.length ; i++) {
+        	if (p.getMemoryRequirements() <= availableBlockSizes[i]) {
                 address = i;
                 fit = true;
                 break;
             }
-        
+    	}
         //If previous search failed then search from the beggining of the block until the current Position
         if( !fit )
         	for (int i = 0 ; i<currentAddress ; i++)
-        		if (p.getMemoryRequirements() <= availableBlockSizes[i] && currentlyUsedMemorySlots.get(i).getStart() == currentlyUsedMemorySlots.get(i).getEnd()) {
+        		if (p.getMemoryRequirements() <= availableBlockSizes[i] ) {
                     address = i;
                     break;
                 }
