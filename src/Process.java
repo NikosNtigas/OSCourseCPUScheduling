@@ -35,7 +35,7 @@ public class Process {
                 break;
             case TERMINATED:
                 // A terminated process must be removed from the scheduler, so if a terminated process try to run throw an unexpected exception.
-                throw new java.lang.RuntimeException("Unexpected exception. Process try to run but the Process was already terminated.");
+                throw new java.lang.RuntimeException("Unexpected error. Process try to run but the Process was already terminated.");
         }
     }
 

@@ -16,6 +16,18 @@ public class CPU {
     }
 
     public void run() {
+        for (Process process : processes) {
+            boolean fit = false;
+            for (int availableBlockSize : mmu.getAvailableBlockSizes()) {
+                if (process.getMemoryRequirements() <= availableBlockSize) {
+                    fit = true;
+                    break;
+                }
+            }
+            if (!fit) // check if teh process is able to fit in a block
+                throw new RuntimeException("Unexpected error. Process cannot fit at any available memory block.");
+        } // making sure every process fits into at least one memory block
+
         for (int i = 0; i < processes.length; i++) {
             for (int j = 0; j < processes.length - 1; j++) {
                 if (processes[j].getArrivalTime() > processes[j + 1].getArrivalTime()) {
@@ -35,7 +47,7 @@ public class CPU {
                     currentProcess++;
                 }
             }
-            
+
             tick();
             Process p = scheduler.getNextProcess();
             if (p != null) {
@@ -43,7 +55,7 @@ public class CPU {
                 if (p.getPCB().getState() == ProcessState.TERMINATED) {
                     scheduler.removeProcess(p); //remove process from the scheduler when it's terminated
                     for (int[] slot : mmu.getProcessInMemorySlot()) {   //Finding the memory slot and block where the current process is allocated
-                        if(p.getPCB().getPid() == slot[0]){
+                        if (p.getPCB().getPid() == slot[0]) {
                             ArrayList<MemorySlot> currentMemoryBlock = mmu.getBlockMemorySlots().get(slot[1]); //This list contains all the occupied memory slot within a block
                             mmu.getCurrentlyUsedMemorySlots().remove(currentMemoryBlock.get(slot[2]));  // Removing the memory slot from the currentlyUsedMemorySlots
 
@@ -51,14 +63,14 @@ public class CPU {
                             currentMemoryBlock.remove(slot[2]); // Removing the used memory slot from the current block
 
 
-                            for (int i = slot[2]; i <currentMemoryBlock.size(); i++) {  //Shifting the loaded processes to the start of the block in order to avoid fragmentation (compaction)
+                            for (int i = slot[2]; i < currentMemoryBlock.size(); i++) {  //Shifting the loaded processes to the start of the block in order to avoid fragmentation (compaction)
                                 currentMemoryBlock.get(i).setStart(currentMemoryBlock.get(i).getStart() - p.getMemoryRequirements());
                                 currentMemoryBlock.get(i).setEnd(currentMemoryBlock.get(i).getEnd() - p.getMemoryRequirements());
                             }
                             mmu.getAvailableBlockSizes()[slot[1]] += p.getMemoryRequirements(); //Increasing the block size by the amount of memory that was allocated to the terminated process
                             mmu.getProcessInMemorySlot().remove(slot);
                             int index = 0;
-                            for (int[] s : mmu.getProcessInMemorySlot()) if(s[1] == slot[1]) s[2] = index++; //Re-indexing the references to the memory slots of the current block
+                            for (int[] s : mmu.getProcessInMemorySlot()) if (s[1] == slot[1]) s[2] = index++; //Re-indexing the references to the memory slots of the current block
                             break;
                         }
                     }

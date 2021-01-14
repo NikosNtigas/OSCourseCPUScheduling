@@ -9,7 +9,7 @@ public class Main3328 {
                 new Process(0, 5, 10),
                 new Process(2, 2, 40),
                 new Process(3, 1, 25),
-                new Process(4, 3, 30)
+                new Process(4, 3, 80)
         };
         final int[] availableBlockSizes = {40, 80, 25, 20}; // sizes in kB
         MemoryAllocationAlgorithm algorithm = new NextFit(availableBlockSizes);
